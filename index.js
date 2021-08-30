@@ -23,7 +23,7 @@ const arrayToString = arr => {
 
 app.use(express.json())
 
-app.get('/recipes', (req, res), () => {
+app.get('/recipes', (req, res) () => {
     let sql = `SELECT * FROM recipes`
 
         db.all(sql, [], (e, rows) => {
@@ -51,6 +51,7 @@ app.get('/recipes/:id', (req, res) => {
     if(typeof id != "string") {
         return !isNaN(id) && !isNaN(parseFloat(id))
     }
+
     else {
         let sql = `SELECT * FROM recipes WHERE recipes.rec_id = ${id}`
 
