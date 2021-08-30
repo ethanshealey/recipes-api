@@ -76,17 +76,20 @@ app.post('/recipes', (req, res) => {
         return res.status(400).send('Incomplete recipe')
     }
     else {
-        let sql = `INSERT INTO recipes(name, ingredients, instructions, cook_time) values('${req.body.name}', '${arrayToString(req.body.ingredients)}', '${arrayToString(req.body.instructions)}', '${req.body.cook_time}')`
+        db.all(`SELECT COUNT(*) as 'count' FROM recipes`, [], (e, rows) => {
+            let sql = `INSERT INTO recipes(rec_id, name, ingredients, instructions, cook_time) values('${rows[0].count + 1}', '${req.body.name}', '${arrayToString(req.body.ingredients)}', '${arrayToString(req.body.instructions)}', '${req.body.cook_time}')`
 
-        db.run(sql, (e) => {
-            if(e) {
-                console.log(e)
-                res.status(400).send(`${e}`)
-            }
-            else {
-                res.status(200).send(`Recipe ${req.body.name} added!`)
-            }
+            db.run(sql, (e) => {
+                if(e) {
+                    console.log(e)
+                    res.status(400).send(`${e}`)
+                }
+                else {
+                    res.status(200).send(`Recipe ${req.body.name} added!`)
+                }
+            })
         })
+        
     }
 })
 
