@@ -23,7 +23,7 @@ const arrayToString = arr => {
 
 app.use(express.json())
 
-app.get('/recipes', (req, res) () => {
+app.get('/recipes', (req, res) => {
     let sql = `SELECT * FROM recipes`
 
         db.all(sql, [], (e, rows) => {
