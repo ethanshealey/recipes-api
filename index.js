@@ -1,7 +1,6 @@
 const express = require('express')
 const sqlite3 = require('sqlite3').verbose()
 const app = express()
-const PORT = 8080;
 
 let db = new sqlite3.Database('./ethanAPI.db', (e) => {
     if(e)
@@ -88,6 +87,6 @@ app.post('/recipes', (req, res) => {
     }
 })
 
-app.listen(PORT, () => {
+app.listen(process.env.port || 5000, () => {
     console.log(`running on http://localhost:${PORT}`)
 })
