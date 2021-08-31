@@ -76,8 +76,16 @@ app.post('/recipes', (req, res) => {
         return res.status(400).send('Incomplete recipe')
     }
     else {
+        
         db.all(`SELECT COUNT(*) as 'count' FROM recipes`, [], (e, rows) => {
-            let sql = `INSERT INTO recipes(rec_id, name, ingredients, instructions, cook_time) values('${rows[0].count + 1}', '${req.body.name}', '${arrayToString(req.body.ingredients)}', '${arrayToString(req.body.instructions)}', '${req.body.cook_time}')`
+
+            const date = new Date().toISOString().slice(0, 10)
+            let sql = `INSERT INTO recipes(rec_id, name, ingredients, instructions, cook_time, date_modified) values('${rows[0].count + 1}', '${req.body.name}', '${arrayToString(req.body.ingredients)}', '${arrayToString(req.body.instructions)}', '${req.body.cook_time}', '${date}')`
+
+            if(e) {
+                console.log(e)
+                res.status(400).send(`${e}`)
+            }
 
             db.run(sql, (e) => {
                 if(e) {
