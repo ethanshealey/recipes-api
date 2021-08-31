@@ -31,13 +31,13 @@ app.get('/recipes', (req, res) => {
                 return console.log(`There was an error. ${e}`)
             }
             if(rows.length == 0) {
-                return res.status(200).send('There are no recupes yet :(')
+                return res.status(200).send('There are no recipes yet :(')
             }
             let data = []
 
             rows.forEach((recipe) => {
                 console.log(recipe)
-                data.push({id: recipe.rec_id, name: recipe.name, ingredients: JSON.parse(recipe.ingredients), instructions: JSON.parse(recipe.instructions), cook_time: recipe.cook_time})
+                data.push({id: recipe.rec_id, name: recipe.name, ingredients: JSON.parse(recipe.ingredients), instructions: JSON.parse(recipe.instructions), cook_time: recipe.cook_time, date_modified: recipe.date_modified})
             })
 
             res.status(200).send(data)
