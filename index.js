@@ -64,7 +64,7 @@ app.get('/recipes/:id', (req, res) => {
                 return res.status(404).send('Error: Recipe Not Found')
             }
 
-            let data = {id: rows[0].rec_id, name: rows[0].name, ingredients: JSON.parse(rows[0].ingredients), instructions: JSON.parse(rows[0].instructions), cook_time: rows[0].cook_time}
+            let data = {id: rows[0].rec_id, name: rows[0].name, ingredients: JSON.parse(rows[0].ingredients), instructions: JSON.parse(rows[0].instructions), cook_time: rows[0].cook_time, date_modified: rows[0].date_modified}
 
             res.status(200).send(data)
         })
