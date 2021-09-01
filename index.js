@@ -97,8 +97,17 @@ app.post('/recipes', (req, res) => {
                 }
             })
         })
-        
     }
+})
+
+app.delete('/recipes/:id', (req, res) => {
+    const { id } = req.params
+    db.run(`DELETE FROM recipes WHERE rec_id=${id}`, [], (e) => {
+        if(e) 
+            res.status(400).send(`${e}`)
+        else
+            res.status(200).send('Recipe deleted!')
+    })
 })
 
 app.listen(process.env.PORT || 5000, () => {
