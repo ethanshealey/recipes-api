@@ -38,7 +38,9 @@ app.get('/recipes', (req, res) => {
 
     
     db.query(sql, (e, rows, fields) => {
-        if(e) throw e
+        if(e) {
+            res.status(400).send(`${e}`)
+        }
 
         if(rows.length == 0) {
             res.status(200).send(`No recipes have been added yet :(`)
