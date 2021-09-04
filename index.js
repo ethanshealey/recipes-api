@@ -93,7 +93,8 @@ app.post('/recipes', (req, res) => {
         const date = new Date().toISOString().slice(0, 10)
         let sql = `INSERT INTO recipes(name, ingredients, instructions, tags, cook_time, date_modified) values('${req.body.name}', '${arrayToString(req.body.ingredients)}', '${arrayToString(req.body.instructions)}', '${req.body.tags}', '${req.body.cook_time}', '${date}')`
         db.query(sql, (e) => {
-            if(e) throw e
+            if(e) 
+                res.status(400).send(`${e}`)
             res.status(200).send(`1 record added: ${req.body.name}`)
         })
     }
