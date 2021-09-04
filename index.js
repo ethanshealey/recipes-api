@@ -42,11 +42,11 @@ app.get('/recipes', (req, res) => {
     
     db.query(sql, (e, rows, fields) => {
         if(e) {
-            res.status(400).send(`${e}`)
+            return res.status(400).send(`${e}`)
         }
 
         if(rows.length == 0) {
-            res.status(200).send(`No recipes have been added yet :(`)
+            return res.status(200).send(`No recipes have been added yet :(`)
         }
 
         let data = []
@@ -74,7 +74,9 @@ app.get('/recipes/:id', (req, res) => {
 
         let sql = `SELECT * FROM recipes WHERE rec_id=${id}`
         db.query(sql, (e, rows, field) => {
-            if(e) throw e
+            if(e) {
+                return res.status(400).send(`${e}`)
+            }
 
             if(rows.length == 0) {
                 return res.status(404).send('Error: Recipe Not Found')
@@ -97,7 +99,7 @@ app.post('/recipes', (req, res) => {
         let sql = `INSERT INTO recipes(name, ingredients, instructions, tags, cook_time, date_modified) values('${req.body.name}', '${arrayToString(req.body.ingredients)}', '${arrayToString(req.body.instructions)}', '${req.body.tags}', '${req.body.cook_time}', '${date}')`
         db.query(sql, (e) => {
             if(e) 
-                res.status(400).send(`${e}`)
+                return res.status(400).send(`${e}`)
             res.status(200).send(`1 record added: ${req.body.name}`)
         })
     }
@@ -120,7 +122,7 @@ app.delete('/recipes/:id', (req, res) => {
     const { id } = req.params
     db.query(`DELETE FROM recipes WHERE rec_id=${id}`, (e) => {
         if(e) 
-            res.status(400).send(`${e}`)
+            return res.status(400).send(`${e}`)
         else
             res.status(200).send('Recipe deleted!')
     })
