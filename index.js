@@ -12,20 +12,12 @@ let db = new sqlite3.Database('./ethanAPI.db', (e) => {
 */
 
 
-const db = mysql.createConnection({
+const db = mysql.createPool({
+    connectionLimit: 5,
     host: "us-cdbr-east-04.cleardb.com",
     user: "b2e411a569a9d5",
     password: "24870c65",
     database: "heroku_07aaca3efc45bdf"
-})
-
-db.on('error', (e) => {
-    db = mysql.createConnection({
-        host: "us-cdbr-east-04.cleardb.com",
-        user: "b2e411a569a9d5",
-        password: "24870c65",
-        database: "heroku_07aaca3efc45bdf"
-    })
 })
 
 const arrayToString = arr => {
