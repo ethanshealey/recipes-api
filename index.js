@@ -121,8 +121,10 @@ app.post('/recipes/:id', (req, res) => {
 app.delete('/recipes/:id', (req, res) => {
     const { id } = req.params
     db.query(`DELETE FROM recipes WHERE rec_id=${id}`, (e) => {
-        if(e) 
+        if(e) {
+            console.log(e)
             return res.status(400).send(`${e}`)
+        }
         else
             return res.status(200).send('Recipe deleted!')
     })
