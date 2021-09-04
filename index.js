@@ -56,7 +56,7 @@ app.get('/recipes', (req, res) => {
             data.push({id: recipe.rec_id, name: recipe.name, ingredients: JSON.parse(recipe.ingredients), instructions: JSON.parse(recipe.instructions), cook_time: recipe.cook_time, date_modified: recipe.date_modified})
         })
 
-        res.status(200).send(data)
+        return res.status(200).send(data)
     })
     
     
@@ -84,7 +84,7 @@ app.get('/recipes/:id', (req, res) => {
 
             let data = {id: rows[0].rec_id, name: rows[0].name, ingredients: JSON.parse(rows[0].ingredients), instructions: JSON.parse(rows[0].instructions), cook_time: rows[0].cook_time, date_modified: rows[0].date_modified}
 
-            res.status(200).send(data)
+            return res.status(200).send(data)
         })
     }
 })
@@ -100,7 +100,7 @@ app.post('/recipes', (req, res) => {
         db.query(sql, (e) => {
             if(e) 
                 return res.status(400).send(`${e}`)
-            res.status(200).send(`1 record added: ${req.body.name}`)
+            return res.status(200).send(`1 record added: ${req.body.name}`)
         })
     }
 })
@@ -113,8 +113,8 @@ app.post('/recipes/:id', (req, res) => {
     const date = new Date().toISOString().slice(0, 10)
     db.query(`UPDATE recipes SET name='${req.body.name}', ingredients='${req.body.ingredients}', instructions='${req.body.instructions}', date_modified='${date}', cook_time='${req.body.cook_time}' WHERE rec_id=${id}`, (e) => {
         if(e)
-            res.status(400).send(`${e}`)
-        res.status(200).send(`1 recorded updated: ${req.body.name}`)
+            return res.status(400).send(`${e}`)
+        return res.status(200).send(`1 recorded updated: ${req.body.name}`)
     })
 })
 
@@ -124,7 +124,7 @@ app.delete('/recipes/:id', (req, res) => {
         if(e) 
             return res.status(400).send(`${e}`)
         else
-            res.status(200).send('Recipe deleted!')
+            return res.status(200).send('Recipe deleted!')
     })
 })
 
