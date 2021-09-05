@@ -3,15 +3,6 @@ const mysql = require('mysql');
 const path = require('path');
 const app = express()
 
-/*
-let db = new sqlite3.Database('./ethanAPI.db', (e) => {
-    if(e)
-        return console.log(e)
-    console.log('db successfully started')
-})
-*/
-
-
 const db = mysql.createPool({
     connectionLimit: 5,
     host: "us-cdbr-east-04.cleardb.com",
@@ -135,5 +126,5 @@ app.delete('/recipes/:id', (req, res) => {
 })
 
 app.listen(process.env.PORT || 5000, () => {
-    console.log(`running`)
+    console.log(`running on port ${process.env.PORT}`)
 })
