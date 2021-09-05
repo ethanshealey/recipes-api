@@ -100,6 +100,9 @@ app.post('/recipes', (req, res) => {
             })
         }
     }
+    else {
+        res.status(400).send('No authorization token given!')
+    }
 })
 
 app.post('/recipes/:id', (req, res) => {
