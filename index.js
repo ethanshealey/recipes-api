@@ -101,6 +101,9 @@ app.post('/recipes', (req, res) => {
             })
         }
     }
+    else {
+        return res.status(400).send('No auth given')
+    }
 })
 
 app.post('/recipes/:id', (req, res) => {
