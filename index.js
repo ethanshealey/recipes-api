@@ -85,6 +85,7 @@ app.get('/recipes/:id', (req, res) => {
 })
 
 app.post('/recipes', (req, res) => {
+    console.log(req.authorization.headers)
     if(req.headers.authorization === 'Bearer ' + process.env.TOKEN) {
         if(req.body.name === undefined || req.body.ingredients === undefined || req.body.instructions === undefined || req.body.cook_time === undefined) {
             return res.status(400).send('Incomplete recipe')
