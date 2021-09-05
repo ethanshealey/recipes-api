@@ -107,28 +107,39 @@ app.post('/recipes', (req, res) => {
 })
 
 app.post('/recipes/:id', (req, res) => {
-    if(req.body.name === undefined || req.body.ingredients === undefined || req.body.instructions === undefined || req.body.cook_time === undefined) {
-        return res.status(400).send('Incomplete recipe')
-    }
-    const { id } = req.params
-    const date = new Date().toISOString().slice(0, 10)
-    db.query(`UPDATE recipes SET name='${req.body.name}', ingredients='${arrayToString(req.body.ingredients)}', instructions='${arrayToString(req.body.instructions)}', date_modified='${date}', cook_time='${req.body.cook_time}' WHERE rec_id=${id}`, (e) => {
-        if(e) {
-            console.log(e)
-            return res.status(400).send(`${e}`)
+
+    if(req.headers.authorization === process.env.TOKEN) {
+        if(req.body.name === undefined || req.body.ingredients === undefined || req.body.instructions === undefined || req.body.cook_time === undefined) {
+            return res.status(400).send('Incomplete recipe')
         }
-        return res.status(200).send(`1 recorded updated: ${req.body.name}`)
-    })
+        const { id } = req.params
+        const date = new Date().toISOString().slice(0, 10)
+        db.query(`UPDATE recipes SET name='${req.body.name}', ingredients='${arrayToString(req.body.ingredients)}', instructions='${arrayToString(req.body.instructions)}', date_modified='${date}', cook_time='${req.body.cook_time}' WHERE rec_id=${id}`, (e) => {
+            if(e) {
+                console.log(e)
+                return res.status(400).send(`${e}`)
+            }
+            return res.status(200).send(`1 recorded updated: ${req.body.name}`)
+        })
+    }
+    else {
+        return res.status(400).send('No auth given')
+    }
 })
 
 app.delete('/recipes/:id', (req, res) => {
-    const { id } = req.params
-    db.query(`DELETE FROM recipes WHERE rec_id=${id}`, (e) => {
-        if(e)
-            return res.status(400).send(`${e}`)
-        else
-            return res.status(200).send('Recipe deleted!')
-    })
+    if(req.headers.authorization === process.env.TOKEN) {
+        const { id } = req.params
+        db.query(`DELETE FROM recipes WHERE rec_id=${id}`, (e) => {
+            if(e)
+                return res.status(400).send(`${e}`)
+            else
+                return res.status(200).send('Recipe deleted!')
+        })
+    }
+    else {
+        return res.status(400).send('No auth given')
+    }
 })
 
 app.listen(process.env.PORT || 5000, () => {
