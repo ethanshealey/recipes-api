@@ -86,19 +86,21 @@ app.get('/recipes/:id', (req, res) => {
 
 app.post('/recipes', (req, res) => {
     
-    return res.status(200).send(req.headers)
-    if(req.body.name === undefined || req.body.ingredients === undefined || req.body.instructions === undefined || req.body.cook_time === undefined) {
-        return res.status(400).send('Incomplete recipe')
-    }
-    else {
+    return res.status(200).send(process.env.TOKEN)
+    if(req.headers.authorization === process.env.TOKEN) {
+        if(req.body.name === undefined || req.body.ingredients === undefined || req.body.instructions === undefined || req.body.cook_time === undefined) {
+            return res.status(400).send('Incomplete recipe')
+        }
+        else {
 
-        const date = new Date().toISOString().slice(0, 10)
-        let sql = `INSERT INTO recipes(name, ingredients, instructions, tags, cook_time, date_modified) values('${req.body.name}', '${arrayToString(req.body.ingredients)}', '${arrayToString(req.body.instructions)}', '${req.body.tags}', '${req.body.cook_time}', '${date}')`
-        db.query(sql, (e) => {
-            if(e) 
-                return res.status(400).send(`${e}`)
-            return res.status(200).send(`1 record added: ${req.body.name}`)
-        })
+            const date = new Date().toISOString().slice(0, 10)
+            let sql = `INSERT INTO recipes(name, ingredients, instructions, tags, cook_time, date_modified) values('${req.body.name}', '${arrayToString(req.body.ingredients)}', '${arrayToString(req.body.instructions)}', '${req.body.tags}', '${req.body.cook_time}', '${date}')`
+            db.query(sql, (e) => {
+                if(e) 
+                    return res.status(400).send(`${e}`)
+                return res.status(200).send(`1 record added: ${req.body.name}`)
+            })
+        }
     }
 })
 
@@ -128,5 +130,5 @@ app.delete('/recipes/:id', (req, res) => {
 })
 
 app.listen(process.env.PORT || 5000, () => {
-    console.log(`running on port ${process.env.PORT}`)
+    console.log(`running`)
 })
